@@ -1,7 +1,10 @@
-import { Card, Container, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "@mui/material";
 
 const Hero = () => {
+  const { userInfo } = useSelector((state) => state.auth);
   return (
     <Container
       component="main"
@@ -30,16 +33,26 @@ const Hero = () => {
         <strong>Backend :</strong> Express , MongoDb(mongoose) , dotenv ,
         jsonwebtoken , bcryptjs , nodemailer , cookie-parser
       </Typography>
-      <Typography
-        variant="caption"
-        display="block"
-        sx={{ marginBottom: 3, textAlign: "center" }}
-      >
-        You are viewing this page either your are not registerd or your account
-        is still not activated. Kindly make registration or activate your
-        account by click the link inside the mail received during the
-        registration
-      </Typography>
+      {userInfo ? (
+        <>
+          <Link href="/url">
+            <Button variant="contained">Make Short URL</Button>
+          </Link>
+        </>
+      ) : (
+        <>
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ marginBottom: 3, textAlign: "center", color: "red" }}
+          >
+            You are viewing this page either your are not logged in or your
+            account is still not activated. Kindly make registration and
+            activate your account or simply login and use our free url shortner
+            app.
+          </Typography>
+        </>
+      )}
     </Container>
   );
 };

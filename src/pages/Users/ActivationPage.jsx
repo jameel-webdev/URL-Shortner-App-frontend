@@ -1,22 +1,47 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
+import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useActivateMutation } from "../../redux/slices/userApiSlice";
+import { setUserInfo } from "../../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function ActivationPage() {
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [activation, { isLoading }] = useActivateMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      code: data.get("code"),
-    });
+    const activeToken = data.get("code");
+    if (activation) {
+      try {
+        const res = await activation({ activeToken }).unwrap();
+        dispatch(setUserInfo({ ...res }));
+        if (res.isActive) {
+          navigate("/login");
+        }
+        alert(res.message);
+      } catch (err) {
+        alert(err?.data?.message || err.error);
+      }
+    }
   };
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/login");
+    }
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,6 +72,7 @@ export default function ActivationPage() {
             label="Enter Your Activation Code"
             name="code"
           />
+          {isLoading && <CircularProgress color="success" />}
 
           <Link href="/url">
             <Button
