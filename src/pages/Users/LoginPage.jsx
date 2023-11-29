@@ -29,15 +29,15 @@ export default function LoginPage() {
     if (userInfo) {
       navigate("/url");
     }
-  });
+  }, [navigate, userInfo]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (email && password) {
       try {
         const res = await login({ email, password }).unwrap();
         dispatch(setUserInfo({ ...res }));
+        navigate("/activate");
         alert(res.message);
-        navigate("/url");
       } catch (err) {
         alert(err?.data?.message || err.error);
       }

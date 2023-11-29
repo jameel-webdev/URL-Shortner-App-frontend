@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+// import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Button from "@mui/material/Button";
 import { Alert, Link, Menu, MenuItem } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
@@ -62,7 +63,7 @@ export default function Header() {
                   onClick={handleClick}
                   size="large"
                 >
-                  <Typography variant="h6">{userInfo.firstName}</Typography>
+                  <Typography variant="h6">{userInfo.name}</Typography>
                 </Button>
                 <Menu
                   id="basic-menu"
@@ -92,6 +93,12 @@ export default function Header() {
                     <ExitToAppIcon />
                   </Button>
                 </Link>
+                {/* <Link href="/activate">
+                  <Button color="inherit">
+                    Activate
+                    <LockOpenIcon />
+                  </Button>
+                </Link> */}
               </>
             )}
           </Toolbar>

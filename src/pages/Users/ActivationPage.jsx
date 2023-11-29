@@ -12,7 +12,7 @@ import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useActivateMutation } from "../../redux/slices/userApiSlice";
-import { setUserInfo } from "../../redux/slices/authSlice";
+import { removeUserInfo, setUserInfo } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function ActivationPage() {
@@ -29,7 +29,7 @@ export default function ActivationPage() {
         const res = await activation({ activeToken }).unwrap();
         dispatch(setUserInfo({ ...res }));
         if (res.isActive) {
-          navigate("/login");
+          navigate("/url");
         }
         alert(res.message);
       } catch (err) {
@@ -38,10 +38,11 @@ export default function ActivationPage() {
     }
   };
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo.isActive) {
+      dispatch(removeUserInfo());
       navigate("/login");
     }
-  });
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">

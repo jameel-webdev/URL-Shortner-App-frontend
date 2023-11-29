@@ -2,6 +2,7 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
+import CircularProgress from "@mui/material/CircularProgress";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -9,15 +10,29 @@ import Box from "@mui/material/Box";
 import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useForgotpasswordMutation } from "../../redux/slices/userApiSlice";
 
 export default function ForgotPasswordPage() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [forgotPassword, { isLoading }] = useForgotpasswordMutation();
+  useEffect(() => {}, []);
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email");
+    if (email) {
+      try {
+        const res = await forgotPassword({ email }).unwrap();
+        alert(res.message);
+        navigate("/login");
+      } catch (error) {
+        alert(err?.data?.message || err.error);
+      }
+    } else {
+      alert(`Provide email address`);
+    }
   };
 
   return (
@@ -50,6 +65,7 @@ export default function ForgotPasswordPage() {
             name="email"
             autoComplete="email"
           />
+          {isLoading && <CircularProgress color="success" />}
 
           <Button
             type="submit"

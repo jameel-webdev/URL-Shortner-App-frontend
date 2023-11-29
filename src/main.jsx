@@ -25,7 +25,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/activate" element={<ActivationPage />} />
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-            <Route path="/resetpassword" element={<ResetPasswordPage />} />
+            <Route
+              path="/resetpassword/:token"
+              element={<ResetPasswordPage />}
+            />
             <Route path="/url" element={<MainUrlPage />} />
             <Route path="/shorturl" element={<ShortUrlPage />} />
           </Route>

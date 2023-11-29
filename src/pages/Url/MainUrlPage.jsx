@@ -1,13 +1,27 @@
 import { Container, Typography, Box, TextField, Button } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useCreateMutation } from "../../redux/slices/urlApiSlice.js";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const MainUrlPage = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [createUrl, { isLoading }] = useCreateMutation();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      link: data.get("link"),
-    });
+    const fullurl = data.get("link");
+    try {
+      if (fullurl) {
+        const res = await createUrl({ fullurl }).unwrap();
+        navigate("/shorturl");
+        alert(res.message);
+      }
+    } catch (error) {
+      alert(err?.data?.message || err.error);
+    }
   };
   return (
     <>
@@ -25,7 +39,7 @@ const MainUrlPage = () => {
           }}
         >
           <Typography variant="h3" color="steelblue">
-            ZhartY URL
+            Zhart URL
           </Typography>
           <Typography variant="h6" color="steelblue">
             Paste the URL to be shortened
@@ -37,6 +51,7 @@ const MainUrlPage = () => {
             fullWidth
             required
           />
+          {isLoading && <CircularProgress color="success" />}
           <Button type="submit" variant="contained" size="large">
             Shorten URL
           </Button>

@@ -53,6 +53,6 @@ export const {
   useActivateMutation,
   useLoginMutation,
   useLogoutMutation,
-  useForgotPasswordMutation,
-  useResetPasswordMutation,
+  useForgotpasswordMutation,
+  useResetpasswordMutation,
 } = usersApiSlice;

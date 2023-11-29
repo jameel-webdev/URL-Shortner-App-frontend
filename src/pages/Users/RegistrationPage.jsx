@@ -45,9 +45,7 @@ export default function RegistrationPage() {
           password,
         }).unwrap();
         dispatch(setUserInfo({ ...res }));
-        if (!res.isActive) {
-          navigate("/activate");
-        }
+        navigate("/activate");
         alert(res.message);
       } catch (err) {
         alert(err?.data?.message || err.error);
