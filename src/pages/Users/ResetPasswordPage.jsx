@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 
 export default function ResetPasswordPage() {
   const { token } = useParams();
+  console.log(token);
   const [resetPassword, { isLoading }] = useResetpasswordMutation();
   const handleSubmit = async (event) => {
     event.preventDefault();

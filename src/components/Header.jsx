@@ -12,6 +12,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeUserInfo } from "../redux/slices/authSlice";
+import { removeUrlInfo } from "../redux/slices/urlSlice";
 import { useLogoutMutation } from "../redux/slices/userApiSlice";
 
 export default function Header() {
@@ -31,6 +32,7 @@ export default function Header() {
     try {
       await logout().unwrap();
       dispatch(removeUserInfo());
+      dispatch(removeUrlInfo());
       navigate("/");
     } catch (err) {
       <Alert severity="error">{err?.data?.message || err.error}</Alert>;

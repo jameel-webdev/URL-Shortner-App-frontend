@@ -1,7 +1,11 @@
+import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 import React from "react";
 
 const PrivateRoute = () => {
-  return <div>PrivateRoute</div>;
+  const { userInfo } = useSelector((state) => state.auth);
+
+  return userInfo.isActive ? <Outlet /> : <Navigate to="/activate" replace />;
 };
 
 export default PrivateRoute;

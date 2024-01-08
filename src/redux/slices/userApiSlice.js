@@ -1,6 +1,6 @@
 import { apiSlice } from "./apiSlice";
 
-const USERS_URL = "http://localhost:8003/api/users";
+const USERS_URL = "/api/users";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -40,7 +40,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
     resetpassword: builder.mutation({
       query: (data, token) => ({
-        url: `${USERS_URL}/resetpassword/:${token}`,
+        url: `${USERS_URL}/resetpassword/${data.token}`,
         method: "POST",
         body: data,
       }),

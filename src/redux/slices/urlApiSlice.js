@@ -1,24 +1,25 @@
 import { apiSlice } from "./apiSlice";
 
-const USERS_URL = "http://localhost:8003/api/urls";
+const SHORTY_URL = "/api/urls";
 
 export const urlsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     create: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/fullurl`,
+        url: `${SHORTY_URL}/fullurl`,
         method: "POST",
         body: data,
       }),
     }),
-    redirect: builder.mutation({
-      query: (data) => ({
-        url: `${USERS_URL}/:shorturl`,
-        method: "GET",
-        body: data,
+    redirect: builder.query({
+      query: (shorturl) => ({
+        url: `${SHORTY_URL}/${shorturl}`,
+        providesTags: (result, error, shorturl) => [
+          { type: "Url", id: shorturl },
+        ],
       }),
     }),
   }),
 });
 
-export const { useCreateMutation, useRedirectMutation } = urlsApiSlice;
+export const { useCreateMutation, useRedirectQuery } = urlsApiSlice;

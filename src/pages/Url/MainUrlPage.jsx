@@ -1,14 +1,16 @@
 import { Container, Typography, Box, TextField, Button } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useCreateMutation } from "../../redux/slices/urlApiSlice.js";
 import CircularProgress from "@mui/material/CircularProgress";
+import { setUrlInfo } from "../../redux/slices/urlSlice.js";
 
 const MainUrlPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [createUrl, { isLoading }] = useCreateMutation();
-
+  const { urlInfo } = useSelector((state) => state.url);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -16,6 +18,7 @@ const MainUrlPage = () => {
     try {
       if (fullurl) {
         const res = await createUrl({ fullurl }).unwrap();
+        dispatch(setUrlInfo({ ...res }));
         navigate("/shorturl");
         alert(res.message);
       }
